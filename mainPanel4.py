@@ -52,7 +52,7 @@ def redo():
     canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
     canvas.mpl_connect("key_press_event", on_key_press)
     
-step=0.05
+step=0.1
 
 root = tkinter.Tk()
 root.wm_title("Embedding in Tk")
@@ -81,9 +81,18 @@ ynew1=f1(xnew)
 ynew2=f2(xnew)
 
 fig = Figure(figsize=(5, 4), dpi=100)
+
+#grafico da interpolacao linear
 fig.add_subplot(111).plot(xnew, ynew,"ro")
+
+#grafico da interpolacao polinomial de Lagrange
 fig.add_subplot(111).plot(xnew, ynew1,"b--")
+
+#grafico da interpolacao com Spline Cubico
 fig.add_subplot(111).plot(xnew, ynew2,"g^")
+
+#adicionando os pontos originais
+fig.add_subplot(111).plot(np.arange(p1.getX(),p3.getX(),1.0),np.arange(p1.getY(),p3.getY(),1.0),"r^")
 
 canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
 canvas.draw()
