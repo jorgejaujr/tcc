@@ -54,8 +54,7 @@ def redo():
     
 step=0.1
 
-root = tkinter.Tk()
-root.wm_title("Embedding in Tk")
+
 
 p3 = point.Point(3.0,4.0)
 p2 = point.Point(2.0,3.0)
@@ -94,37 +93,46 @@ fig.add_subplot(111).plot(xnew, ynew2,"g^")
 #adicionando os pontos originais
 fig.add_subplot(111).plot(np.arange(p1.getX(),p3.getX(),1.0),np.arange(p1.getY(),p3.getY(),1.0),"r^")
 
-canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
-canvas.draw()
-canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+class Gui:
+   def __init__(self, master):
+       	self.master = master
+       
+       	master.wm_title("Embedding in Tk")
+        self.canvas = FigureCanvasTkAgg(fig, master=master)# A tk.DrawingArea.
+        self.canvas.draw()
 
-toolbar = NavigationToolbar2Tk(canvas, root)
-toolbar.update()
-canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-canvas.mpl_connect("key_press_event", on_key_press)
+        self.canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
-var1=tkinter.IntVar()
-var2=tkinter.IntVar()
-var3=tkinter.IntVar()
-chkbox1 = tkinter.Checkbutton(master=root, text="Check 1",variable = var1)
-chkbox1.pack(side=tkinter.BOTTOM)
-chkbox2 = tkinter.Checkbutton(master=root, text="Check 2",variable = var2)
-chkbox2.pack(side=tkinter.BOTTOM)
-chkbox3 = tkinter.Checkbutton(master=root, text="Check 3",variable = var3)
-chkbox3.pack(side=tkinter.BOTTOM)
+        self.toolbar = NavigationToolbar2Tk(self.canvas, master)
+        self.toolbar.update()
+        self.canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+        self.canvas.mpl_connect("key_press_event", on_key_press)
 
-button = tkinter.Button(master=root, text="Quit", command=_quit)
-button.pack(side=tkinter.BOTTOM)
-button = tkinter.Button(master=root, text="Pega passo", command=redo)
-button.pack(side=tkinter.BOTTOM)
+        self.var1=tkinter.IntVar()
+        self.var2=tkinter.IntVar()
+        self.var3=tkinter.IntVar()
+        self.chkbox1 = tkinter.Checkbutton(master=master, text="Check 1",variable = self.var1)
+        self.chkbox1.pack(side=tkinter.BOTTOM)
+        self.chkbox2 = tkinter.Checkbutton(master=master, text="Check 2",variable = self.var2)
+        self.chkbox2.pack(side=tkinter.BOTTOM)
+        self.chkbox3 = tkinter.Checkbutton(master=master, text="Check 3",variable = self.var3)
+        self.chkbox3.pack(side=tkinter.BOTTOM)
 
-e1=tkinter.Entry(root)
-e1.pack(side=tkinter.BOTTOM)
 
-lb1=tkinter.Label(root,text="Passo de Spline")
-lb1.pack()
+        self.button = tkinter.Button(master=master, text="Quit", command=_quit)
+        self.button.pack(side=tkinter.BOTTOM)
+        self.button1 = tkinter.Button(master=master, text="Pega passo", command=redo)
+        self.button1.pack(side=tkinter.BOTTOM)
 
-tkinter.mainloop()
+        self.e1=tkinter.Entry(master)
+        self.e1.pack(side=tkinter.BOTTOM)
+
+        self.lb1=tkinter.Label(master,text="Passo de Spline")
+        self.lb1.pack()
+
+root = tkinter.Tk()
+gui=Gui(root)
+root.mainloop()
 # aqui terminam as alteracores
 # basta descomentar esta parte do codigo que volta ao normal.
 """
